@@ -117,6 +117,7 @@ class Phrases(interfaces.TransformationABC):
         self.vocab = defaultdict(int)  # mapping between utf8 token => its count
         self.min_reduce = 1  # ignore any tokens with count smaller than this
         self.delimiter = delimiter
+        self.phrase_score = {}
 
         if sentences is not None:
             self.add_vocab(sentences)
@@ -228,6 +229,7 @@ class Phrases(interfaces.TransformationABC):
                     # logger.debug("score for %s: (pab=%s - min_count=%s) / pa=%s / pb=%s * vocab_size=%s = %s",
                     #     bigram_word, pab, self.min_count, pa, pb, len(self.vocab), score)
                     if score > threshold:
+                        self.phrase_score[bigram_word] = score
                         new_s.append(bigram_word)
                         last_bigram = True
                         continue
